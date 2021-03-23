@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      var from = null,
+        start = 0,
+        url = "";
+
+      $(document).ready(function () {
+        from = prompt("Por favor digite seu nome");
+        $("form").submit(function (e) {
+          $.post(url, {
+            message: $("#message").val(),
+            who: who,
+          });
+          $("$message").val("");
+          return false; 
+        });
+      });
+
+      function load() {
+          $.get(url + '?start=' + start, function(result){
+              if(result.items) {
+                  result.items.foreach(item=>{
+                    start = item.id;
+                    $('messages').append(renderMessage(item));
+                  });
+                  $('#messages').animate({scrollTop: $('$messages')[0].scrollHeight});
+              };
+              load()
+          })
+      }
+
+      function renderMessage(item){
+          let time = new Date(item.created);
+          time = `${time.getHours()}:${time.getMinutes()<10 ? '0' : ''}:${time.getMinutes()}`
+          return `<div class="msg"><p> ${item.who} </p>${item.message}<span> ${time}</span> </div>`
+      }
+    </script>
+    <title>Chatbot</title>
+  </head>
+  <body>
+    <div id="messages">
+      <form>
+        <input
+          type="text"
+          name=""
+          id="message"
+          autocomplete="off"
+          placeholder="Escreva sua mensagem"
+        />
+        <input type="submit" value="Send" />
+      </form>
+    </div>
+  </body>
+</html>

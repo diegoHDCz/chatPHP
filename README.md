@@ -1,0 +1,1 @@
+Small chat using PHP and Jquery, object of study
